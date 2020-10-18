@@ -1,17 +1,26 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { createUseStyles } from "react-jss";
+import { AppHeader, AppBody } from "./components";
 
+const useStyles = createUseStyles({
+  appContainer: {
+    position: "absolute",
+    backgroundColor: "#E5E5E5",
+    height: "100%",
+    width: "100%",
+  },
+});
 
 function App() {
-  const [yards, setYards] = useState([]);
-  useEffect(()=> {
-    const getYards = async () => {
-     const response = await axios.get('http://localhost:8080/uploads')
-     setYards(response.data);
-    }
-    getYards();
-  },[yards])
-  return <div>{JSON.stringify(yards)}</div>;
+  const styles = useStyles();
+
+  return (
+    <div className={styles.appContainer}>
+      <AppHeader />
+      <AppBody />
+    </div>
+  );
 }
 
 export default App;
