@@ -1,21 +1,9 @@
-import React,{useState,useEffect} from "react";
-import { createUseStyles } from "react-jss";
+import React, { useState, useEffect } from "react";
+
 import FormCard from "../FormCard";
-import axios from 'axios'
-
-const useStyles = createUseStyles({
-  container: {
-    paddingLeft: 55,
-    paddingRight: 55,
-
-    backgroundColor: "#E5E5E5",
-  },
-
-  appBodyTitle: {
-    color: "#282C43",
-    marginBottom: 25,
-  },
-});
+import axios from "axios";
+import YardTile from "../YardTile";
+import { useStyles } from "./styles";
 
 const AppBody = () => {
   const styles = useStyles();
@@ -26,13 +14,19 @@ const AppBody = () => {
       setYards(response.data);
     };
     getYards();
-  }, [yards]);
+  }, [setYards]);
+
   return (
     <div className={styles.container}>
       <h1 className={styles.appBodyTitle}>Import CSV</h1>
-      <FormCard />
-      <div>
-      {JSON.stringify(yards)}
+      <FormCard setYards={setYards} />
+      <div className={styles.listYards}>
+        <p className={styles.title}>Name</p>
+        <div className={styles.divider} />
+
+        {yards.map((yard, index) => (
+          <YardTile key={index} fileName={yard.fileName} />
+        ))}
       </div>
     </div>
   );
