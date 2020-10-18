@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React from "react";
+
 import { createUseStyles } from "react-jss";
 import { AppHeader, AppBody } from "./components";
+import { Switch, Route, Link, Redirect } from "react-router-dom";
 
 const useStyles = createUseStyles({
   appContainer: {
@@ -12,15 +13,27 @@ const useStyles = createUseStyles({
   },
 });
 
-function App() {
-  const styles = useStyles();
+const AppRouter = () => {
+  return (
+    <Switch>
+      <Route exact path="/">
+        <Redirect to="/uploads" />
+      </Route>
+      <Route exact path="/uploads">
+        <App />
+      </Route>
+    </Switch>
+  );
+}
 
+const App = () => {
+  const styles = useStyles();
   return (
     <div className={styles.appContainer}>
       <AppHeader />
       <AppBody />
     </div>
   );
-}
+};
 
-export default App;
+export default AppRouter;
