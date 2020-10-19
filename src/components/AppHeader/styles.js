@@ -8,7 +8,6 @@ export const useStyles = createUseStyles({
       fontSize: 30,
       fontFamily: "cursive",
       paddingLeft: 50,
-      width: "100%",
       height: 60,
       backgroundColor: "#282C43",
       color: "white",
