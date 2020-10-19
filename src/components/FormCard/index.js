@@ -1,19 +1,18 @@
 import React, { useRef, useState, useEffect } from "react";
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import { useStyles } from "./styles";
 
 const FormCard = ({ setYards }) => {
-  const styles = useStyles();
   const inputRef = useRef(null);
+  const [hasFile, setHasFile] = useState(false);
   const [file, setFile] = useState(null);
-  const [fileName, setFileName] = useState();
-
-  useEffect(() => {}, [file]);
+  const [fileName, setFileName] = useState("");
+  const styles = useStyles({ fileName: fileName, hasFile: hasFile });
 
   const handleInputName = (event) => {
     setFileName(event.target.value);
-    console.log(event.target.value);
   };
   const handleInputFile = (event) => {
     inputRef.current.click(event);
@@ -21,6 +20,7 @@ const FormCard = ({ setYards }) => {
 
   const chooseFile = (event) => {
     setFile(event.target.files[0]);
+    setHasFile(true);
   };
 
   const uploadFile = () => {
@@ -31,6 +31,9 @@ const FormCard = ({ setYards }) => {
 
     axios.post("http://localhost:8080/uploads", newFile, {}).then((res) => {
       setYards(res.data.allFiles);
+      setFile(null);
+      setFileName("");
+      setHasFile(false);
     });
   };
 
@@ -42,10 +45,11 @@ const FormCard = ({ setYards }) => {
           type="text"
           name="name"
           placeholder="Name"
+          value={fileName}
           onChange={handleInputName}
         />
         <div className={styles.fileInput} onClick={handleInputFile}>
-          {file ? file.name : "Choose your Csv file"}
+          {file ? file.name : "Choose your .csv file"}
           <input
             onChange={chooseFile}
             style={{ display: "none" }}
@@ -57,7 +61,9 @@ const FormCard = ({ setYards }) => {
       </div>
       <div className={styles.formButtonContainer}>
         <button onClick={uploadFile} className={styles.formButton}>
-          SEND
+          <span style={{ marginRight: 20 }}>SEND</span>
+
+          <FontAwesomeIcon icon={faPaperPlane} />
         </button>
       </div>
     </div>

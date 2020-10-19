@@ -12,6 +12,7 @@ export const useStyles = createUseStyles({
     paddingRight: 5,
     "&:hover $iconButtonTitle, &:hover $icon": {
       color: "#282C43",
+      cursor: 'pointer'
     },
   },
   iconButtonTitle: {
