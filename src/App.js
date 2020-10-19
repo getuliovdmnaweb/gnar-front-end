@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import { createUseStyles } from "react-jss";
-import { AppHeader, AppBody } from "./components";
+import { AppHeader, AppBody, BasicTable } from "./components";
 import {
   Switch,
   Route,
@@ -56,15 +56,28 @@ const AppRouter = () => {
 
 const DetailsCard = ({ files }) => {
   const styles = useStyles();
+  const [detailFile, setDetailFile] = useState([]);
   const { uploadId } = useParams();
-  const detailFile = files.find((file) => file.id === parseInt(uploadId));
+  const selectedFile = detailFile.find(
+    (file) => file.id === parseInt(uploadId)
+  );
+
+  useEffect(() => {
+    const getDetails = async () => {
+      const response = await Axios.get(
+        `http://localhost:8080/uploads/${uploadId}`
+      );
+      setDetailFile(response.data);
+    };
+    getDetails();
+  }, [setDetailFile, uploadId]);
 
   return (
     <div className={styles.appContainer}>
       <AppHeader />
       <div className={styles.detailBody}>
-        <h1 className={styles.detailTitle}>{detailFile?.fileName}</h1>
-        <div className={styles.formCard}>{uploadId}</div>
+        <h1 className={styles.detailTitle}>{selectedFile?.fileName}</h1>
+        <BasicTable details={selectedFile?.details} />
       </div>
     </div>
   );
